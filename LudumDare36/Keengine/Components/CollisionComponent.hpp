@@ -3,6 +3,7 @@
 
 #include <Box2D\Box2D.h>
 
+#include "../Core/PhysicSystem.hpp"
 #include "../Core/SceneComponent.hpp"
 
 namespace ke
@@ -17,8 +18,9 @@ class CollisionComponent : public SceneComponent
 		void onUnregister();
 
 		b2Fixture* getFixture();
+		b2Shape* getShape();
 
-		// TODO : Shape interface
+		void setShape(std::vector<sf::Vector2f> shape);
 
 	protected:
 		b2Fixture* mFixture;

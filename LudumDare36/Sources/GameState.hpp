@@ -4,6 +4,10 @@
 #include "../Keengine/Application/Application.hpp"
 #include "../Keengine/Core/World.hpp"
 
+#include "MyActor.hpp"
+#include "Bloc.hpp"
+#include "../Keengine/Core/Map.hpp"
+
 class GameState : public ke::State
 {
 	public:

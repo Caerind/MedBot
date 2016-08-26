@@ -14,31 +14,18 @@ GameState::GameState()
 	mWorld.getInputs().loadFromFile("Sources/inputs.cfg");
 
 	// Bind action
-	mWorld.getInputs().bindAction("MoveUp", [&](std::vector<std::string> const& data)
-	{
-		if (data.size() > 0) { mWorld.getView().move(sf::Vector2f(0.f, -1.f) * std::stof(data[0]) * 300.f); }
-		return false;
-	});
-	mWorld.getInputs().bindAction("MoveLeft", [&](std::vector<std::string> const& data)
-	{
-		if (data.size() > 0) { mWorld.getView().move(sf::Vector2f(-1.f, 0.f) * std::stof(data[0]) * 300.f); }
-		return false;
-	});
-	mWorld.getInputs().bindAction("MoveDown", [&](std::vector<std::string> const& data)
-	{
-		if (data.size() > 0) { mWorld.getView().move(sf::Vector2f(0.f, 1.f) * std::stof(data[0]) * 300.f); }
-		return false;
-	});
-	mWorld.getInputs().bindAction("MoveRight", [&](std::vector<std::string> const& data)
-	{
-		if (data.size() > 0) { mWorld.getView().move(sf::Vector2f(1.f, 0.f) * std::stof(data[0]) * 300.f); }
-		return false;
-	});
 	mWorld.getInputs().bindAction("ClickLeft", [&](std::vector<std::string> const& data)
 	{
 		// What to do when mouse click ?
 		return false;
 	});
+
+	mWorld.getPhysic().setRenderDebug(true);
+
+	mWorld.createActor<MyActor>()->setPosition({ 200.f, 200.f });
+	mWorld.createActor<Bloc>()->setPosition({ -30.f, 500.f });
+	mWorld.createActor<ke::Map>()->loadTmxFile("Sources/map.tmx");
+
 }
 
 GameState::~GameState()
@@ -60,6 +47,7 @@ bool GameState::handleEvent(sf::Event const& event)
 bool GameState::update(sf::Time dt)
 {
 	mWorld.update(dt);
+	return false;
 }
 
 void GameState::render(sf::RenderTarget & target, sf::RenderStates states)

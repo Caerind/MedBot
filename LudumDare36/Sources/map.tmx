@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="staggered" renderorder="right-down" width="10" height="10" tilewidth="256" tileheight="128" staggeraxis="y" staggerindex="odd" nextobjectid="12">
+ <tileset firstgid="1" name="iso" tilewidth="256" tileheight="128" tilecount="4" columns="4">
+  <image source="iso.png" width="1024" height="128"/>
+ </tileset>
+ <layer name="Calque de Tile 1" width="10" height="10">
+  <data encoding="base64" compression="zlib">
+   eJxjYmBgYKIyZkHCxKgbrOYNBAYAtwAA4w==
+  </data>
+ </layer>
+ <objectgroup name="Calque d'objets 1">
+  <object id="3" x="32" y="-15" width="630" height="127"/>
+  <object id="4" x="622" y="-32" width="481" height="115"/>
+  <object id="5" x="15" y="67" width="128" height="431"/>
+  <object id="7" x="45" y="445" width="117" height="280"/>
+  <object id="8" x="90" y="583" width="608" height="123"/>
+  <object id="9" x="1014" y="38" width="136" height="247"/>
+  <object id="10" x="622" y="582" width="395" height="129"/>
+  <object id="11" x="1014" y="273" width="136" height="413"/>
+ </objectgroup>
+</map>

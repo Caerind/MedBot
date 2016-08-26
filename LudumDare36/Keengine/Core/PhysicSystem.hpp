@@ -20,7 +20,7 @@ class PhysicSystem : public b2Draw
 		void reset();
 
 		void disableGravity();
-		void setGravity(b2Vec2 gravity = b2Vec2(0.f, -9.8f));
+		void setGravity(b2Vec2 gravity);
 		b2Vec2 getGravity();
 
 		void update(sf::Time dt);

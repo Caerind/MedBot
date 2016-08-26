@@ -1,4 +1,5 @@
 #include "PhysicSystem.hpp"
+#include <iostream>
 
 namespace ke
 {
@@ -10,6 +11,7 @@ PhysicSystem::PhysicSystem()
 	: mWorld(new b2World(b2Vec2(0.f, 0.f)))
 {
 	mWorld->SetDebugDraw(this);
+	SetFlags(b2Draw::e_shapeBit);
 	mVelocityIterations = 8;
 	mPositionIterations = 3;
 	mRender = false;

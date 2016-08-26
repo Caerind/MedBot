@@ -25,6 +25,7 @@ Actor::Actor(std::string const& id)
 
 	b2BodyDef bDef;
 	bDef.type = b2_dynamicBody;
+	bDef.position.Set(0, 0);
 	mBody = getWorld().getPhysic().createBody(&bDef);
 	mBody->SetUserData(this);
 }
@@ -136,6 +137,23 @@ void Actor::updateComponents(sf::Time dt)
 	for (std::size_t i = 0; i < size; i++)
 	{
 		mComponents[i]->update(dt);
+	}
+}
+
+void Actor::updateBody()
+{
+	if (mBody != nullptr)
+	{
+		mBody->SetTransform(getPosition() * Physic::conv, degToRad(getRotation()));
+	}
+}
+
+void Actor::updatePhysic()
+{
+	if (mBody != nullptr)
+	{
+		setPosition(mBody->GetPosition() * Physic::conv);
+		setRotation(radToDeg(mBody->GetAngle()));
 	}
 }
 

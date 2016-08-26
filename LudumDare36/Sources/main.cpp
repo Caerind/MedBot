@@ -13,6 +13,7 @@ int main()
 	// Create/Load Resources
 	ke::Application::createResource<ke::Theme>("css", "Sources/widgets.css");
 	ke::Application::createResource<ke::Font>("futura", "Sources/futura.ttf");
+	ke::Application::createResource<ke::Texture>("ld36", "Sources/ld36.png");
 
 	// Register States
 	ke::Application::registerState<GameState>("GameState");

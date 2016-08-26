@@ -55,6 +55,9 @@ class Actor
 		virtual void update(sf::Time dt);
 		void updateComponents(sf::Time dt);
 
+		void updateBody();
+		void updatePhysic();
+
 		void attachComponent(SceneComponent* component);
 		void detachComponent(SceneComponent* component);
 

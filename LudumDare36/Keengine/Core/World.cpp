@@ -34,7 +34,6 @@ World::World()
 	, mPrimitives()
 	, mSceneTexture()
 	, mVertices(sf::Triangles, 6)
-	, mClockCreation()
 	, mCamera(nullptr)
 	, mWorldView(getApplication().getDefaultView())
 	, mEffects()
@@ -59,7 +58,7 @@ World::World()
 	if (!hasResource("pointLightTexture"))
 	{
 		Texture& texture = createResource<Texture>("pointLightTexture");
-		if (!texture.loadFromFile("Example/pointLightTexture.png"))
+		if (!texture.loadFromMemory(pointLightTexture, (sizeof(pointLightTexture) / sizeof(*pointLightTexture))))
 		{
 			getLog() << "World - Can't load pointLightTexture";
 		}
@@ -68,7 +67,7 @@ World::World()
 	if (!hasResource("directionLightTexture"))
 	{
 		Texture& texture = createResource<Texture>("directionLightTexture");
-		if (!texture.loadFromFile("Example/directionLightTexture.png"))
+		if (!texture.loadFromMemory(directionLightTexture, (sizeof(directionLightTexture) / sizeof(*directionLightTexture))))
 		{
 			getLog() << "World - Can't load directionLightTexture";
 		}
@@ -77,7 +76,7 @@ World::World()
 	if (!hasResource("penumbraTexture"))
 	{
 		Texture& texture = createResource<Texture>("penumbraTexture");
-		if (!texture.loadFromFile("Example/penumbraTexture.png"))
+		if (!texture.loadFromMemory(penumbraTexture, (sizeof(penumbraTexture) / sizeof(*penumbraTexture))))
 		{
 			getLog() << "World - Can't load penumbraTexture";
 		}
@@ -143,6 +142,11 @@ b2World* World::getPhysicWorld()
 	return mPhysic.getWorld();
 }
 
+TimeSystem& World::getTime()
+{
+	return mTime;
+}
+
 void World::handleEvent(sf::Event const & event)
 {
 	mInputs.handleEvent(event);
@@ -150,17 +154,25 @@ void World::handleEvent(sf::Event const & event)
 
 void World::update(sf::Time dt)
 {
+	dt *= mTime.getTimeFactor();
+
 	mInputs.update(dt);
+	mTime.update(dt);
 
 	for (auto& actor : mActors)
 	{
 		actor->updateComponents(dt);
 		actor->update(dt);
+		actor->updateBody();
 	}
 
 	if (mUsePhysic)
 	{
 		mPhysic.update(dt);
+		for (auto& actor : mActors)
+		{
+			actor->updatePhysic();
+		}
 	}
 
 	mActors.erase(std::remove_if(mActors.begin(), mActors.end(), [](Actor::Ptr actor) 
@@ -250,15 +262,15 @@ void World::render(sf::RenderTarget& target)
 		itr->second->apply(mSceneTexture, mSceneTexture);
 	}
 
+	if (mUsePhysic)
+	{
+		mPhysic.render(mSceneTexture);
+	}
+
 	mSceneTexture.display();
 
 	// Apply to the window
 	target.draw(mVertices, sf::RenderStates(&mSceneTexture.getTexture()));
-
-	if (mUsePhysic)
-	{
-		mPhysic.render(target);
-	}
 }
 
 void World::registerPrimitive(PrimitiveComponent* component)
@@ -329,11 +341,6 @@ std::size_t World::getActorCount() const
 std::size_t World::getActualId()
 {
 	return mIdCounter++;
-}
-
-sf::Time World::getTimeSinceCreation() const
-{
-	return mClockCreation.getElapsedTime();
 }
 
 void World::removeEffect(std::size_t const & order)
