@@ -3,37 +3,14 @@
 GameState::GameState()
 	: mWorld(ke::World::createInstance())
 {
-	// Register inputs
-	mWorld.getInputs().setKeyboardMapping("MoveUp", sf::Keyboard::Z, ke::InputType::Hold);
-	mWorld.getInputs().setKeyboardMapping("MoveLeft", sf::Keyboard::Q, ke::InputType::Hold);
-	mWorld.getInputs().setKeyboardMapping("MoveDown", sf::Keyboard::S, ke::InputType::Hold);
-	mWorld.getInputs().setKeyboardMapping("MoveRight", sf::Keyboard::D, ke::InputType::Hold);
-	mWorld.getInputs().setMouseMapping("ClickLeft", sf::Mouse::Left, ke::InputType::Pressed);
+	mWorld.getTime().setTimeFactor(2.f);
 
-	// If existing key binding, load it
-	mWorld.getInputs().loadFromFile("Sources/inputs.cfg");
-
-	// Bind action
-	mWorld.getInputs().bindAction("ClickLeft", [&](std::vector<std::string> const& data)
-	{
-		// What to do when mouse click ?
-		return false;
-	});
-
-	mWorld.getPhysic().setRenderDebug(true);
-
-	mWorld.createActor<MyActor>()->setPosition({ 200.f, 200.f });
-	mWorld.createActor<Bloc>()->setPosition({ -30.f, 500.f });
-	mWorld.createActor<ke::Map>()->loadTmxFile("Sources/map.tmx");
-
+	createActor();
+	createGui();
 }
 
 GameState::~GameState()
 {
-	// Save key binding
-	mWorld.getInputs().saveToFile("Sources/inputs.cfg");
-
-	// Destroy the world
 	ke::World::destroyInstance();
 }
 
@@ -62,4 +39,31 @@ void GameState::onActivate()
 
 void GameState::onDeactivate()
 {
+}
+
+void GameState::createActor()
+{
+	mWorld.createActor<MyMap>();
+
+	mBase1 = mWorld.createActor<Base>(1)->getId();
+	mBase2 = mWorld.createActor<Base>(2)->getId();
+
+	Robot::Ptr test = mWorld.createActor<Robot>();
+	test->setPosition({ 50.f, 365.f });
+}
+
+void GameState::createGui()
+{
+}
+
+void GameState::grantMoney(int team, int amount)
+{
+	if (team == 1)
+	{
+		mMoney1 += amount;
+	}
+	if (team == 2)
+	{
+		mMoney2 += amount;
+	}
 }

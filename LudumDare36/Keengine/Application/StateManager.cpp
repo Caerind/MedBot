@@ -161,7 +161,7 @@ void StateManager::applyPendingChanges()
 	mPendingList.clear();
 }
 
-std::unique_ptr<State> StateManager::createState(std::string const& id)
+std::shared_ptr<State> StateManager::createState(std::string const& id)
 {
 	auto found = mFactories.find(id);
 	if (found == mFactories.end())

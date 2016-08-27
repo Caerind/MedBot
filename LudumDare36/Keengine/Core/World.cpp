@@ -38,7 +38,7 @@ World::World()
 	, mWorldView(getApplication().getDefaultView())
 	, mEffects()
 {
-	mUsePhysic = true;
+	//mUsePhysic = true;
 	//mUseLights = true;
 
 	std::string bgTexture = Application::getBackgroundTexture();
@@ -163,7 +163,10 @@ void World::update(sf::Time dt)
 	{
 		actor->updateComponents(dt);
 		actor->update(dt);
-		actor->updateBody();
+		if (mUsePhysic)
+		{
+			actor->updateBody();
+		}
 	}
 
 	if (mUsePhysic)
@@ -178,13 +181,20 @@ void World::update(sf::Time dt)
 	mActors.erase(std::remove_if(mActors.begin(), mActors.end(), [](Actor::Ptr actor) 
 	{ 
 		bool ret = (actor == nullptr || actor->isMarkedForRemoval());
-		if (ret && actor != nullptr)
+		if (actor->isMarkedForRemoval() && actor != nullptr)
 		{
 			actor->onDestroyed();
+			/*
+			TODO : Fix
 			for (std::size_t i = 0; i < actor->getComponentCount(); i++)
 			{
-				actor->getComponent(i)->onUnregister();
+				Component* component = actor->getComponent(i)->onUnregister();
+				if (component != nullptr)
+				{
+					component->onUnregister();
+				}
 			}
+			*/
 		}
 		return ret;
 	}), mActors.end());

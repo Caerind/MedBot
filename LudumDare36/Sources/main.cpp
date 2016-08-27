@@ -13,7 +13,12 @@ int main()
 	// Create/Load Resources
 	ke::Application::createResource<ke::Theme>("css", "Sources/widgets.css");
 	ke::Application::createResource<ke::Font>("futura", "Sources/futura.ttf");
-	ke::Application::createResource<ke::Texture>("ld36", "Sources/ld36.png");
+	ke::Application::createResource<ke::Texture>("ld36", "Sources/ld36.png").setSmooth(true);
+	ke::Application::createResource<ke::Texture>("robot", "Sources/robot.png").setSmooth(true);
+	ke::Application::createResource<ke::Texture>("back", "Sources/back.png").setSmooth(true);
+	ke::Application::createResource<ke::Texture>("base", "Sources/base.png").setSmooth(true);
+	ke::Application::createResource<ke::Texture>("soldier", "Sources/soldier.png").setSmooth(true);
+	ke::Application::createResource<ke::Texture>("lifebar", "Sources/lifebar.png").setSmooth(true);
 
 	// Register States
 	ke::Application::registerState<GameState>("GameState");
