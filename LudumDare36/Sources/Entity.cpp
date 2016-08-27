@@ -106,7 +106,7 @@ std::string Entity::getTarget() const
 void Entity::acquireTarget()
 {
 	std::size_t size = getWorld().getActorCount();
-	float mindist = 30.f;
+	float mindist = 50.f;
 	for (std::size_t i = 0; i < size; i++)
 	{
 		Entity::Ptr ent = getWorld().getTypedActor<Entity>(i);

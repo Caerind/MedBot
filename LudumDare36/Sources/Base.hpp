@@ -20,4 +20,4 @@ class Base : public Entity
 		ke::SpriteComponent mLifeBar;
 };
 
-#endif // MYACTOR_HPP
+#endif // BASE_HPP

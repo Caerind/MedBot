@@ -3,11 +3,11 @@
 
 #include <iostream>
 
-Robot::Robot()
+Robot::Robot(int life, int attack, int speed)
 {
-	mLifeStat = 100;
-	mAttackStat = 100;
-	mSpeedStat = 200;
+	mLifeStat = life;
+	mAttackStat = attack;
+	mSpeedStat = speed;
 	mLife = mLifeStat;
 	mTeam = 1;
 	mTarget = "";
@@ -46,7 +46,6 @@ void Robot::update(sf::Time dt)
 					entity->inflige(mAttackStat);
 					if (entity->isDead())
 					{
-						std::cout << "test" << std::endl;
 						grantMoney();
 						entity->onDying();
 						entity->remove();
@@ -55,6 +54,14 @@ void Robot::update(sf::Time dt)
 					mAttackTimer = sf::Time::Zero;
 				}
 			}
+			else
+			{
+				mTarget = "";
+			}
+		}
+		else
+		{
+			mTarget = "";
 		}
 	}
 	else

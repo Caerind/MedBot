@@ -4,6 +4,8 @@
 #include "../Keengine/Application/Application.hpp"
 #include "../Keengine/Core/World.hpp"
 
+#include <SFML/Graphics/Sprite.hpp>
+
 #include "MyMap.hpp"
 #include "Robot.hpp"
 #include "Soldier.hpp"
@@ -22,6 +24,7 @@ class GameState : public ke::State
 		void onActivate();
 		void onDeactivate();
 
+		void createData();
 		void createActor();
 		void createGui();
 
@@ -35,6 +38,24 @@ class GameState : public ke::State
 
 		int mMoney1;
 		int mMoney2;
+
+		sf::Sprite mHeadSprite;
+		sf::Sprite mBodySprite;
+		sf::Sprite mLegsSprite;
+		int mHead;
+		int mBody;
+		int mLegs;
+
+		struct GameData
+		{
+			GameData();
+			GameData(int id, int price, int value);
+			int id;
+			int price;
+			int value;
+		};
+
+		std::map<int, GameData> mData;
 };
 
 #endif // GAMESTATE_HPP

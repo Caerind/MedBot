@@ -12,12 +12,13 @@ class Soldier : public Entity
 
 		void update(sf::Time dt);
 
+		void onDying();
+
         typedef std::shared_ptr<Soldier> Ptr;
 
 	private:
 		ke::AnimatorComponent mComponent;
-
-		std::string mTarget;
+		sf::Time mAttackTimer;
 };
 
 #endif // SOLDIER_HPP

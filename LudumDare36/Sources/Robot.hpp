@@ -8,7 +8,7 @@
 class Robot : public Entity
 {
     public:
-		Robot();
+		Robot(int life, int attack, int speed);
 
 		void update(sf::Time dt);
 

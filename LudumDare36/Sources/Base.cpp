@@ -22,13 +22,13 @@ Base::Base(int team)
 	attachComponent(&mLifeBack);
 	mLifeBack.setZ(100.f);
 	mLifeBack.setTexture("lifebar");
-	mLifeBack.setTextureRect({ 0,0,209,45 });
+	mLifeBack.setTextureRect({ 0,0,600,45 });
 
 	registerComponent(&mLifeBar);
 	attachComponent(&mLifeBar);
 	mLifeBar.setZ(200.f);
 	mLifeBar.setTexture("lifebar");
-	mLifeBar.setTextureRect({ 0,45,209,45 });
+	mLifeBar.setTextureRect({ 0,45,600,45 });
 
 	if (mTeam == 1)
 	{
@@ -53,14 +53,10 @@ Base::Base(int team)
 
 	mSprite.setScale({ 2.f, 2.f });
 	mSprite.move({ -36.f, -100.f });
-
-	mLifeBack.setScale({ 2.f, 1.f });
-
-	mLifeBar.setScale({ 2.f, 1.f });
 }
 
 void Base::update(sf::Time dt)
 {
-	float percent = 209.f * static_cast<float>(mLife) / static_cast<float>(mLifeStat);
+	float percent = 600.f * static_cast<float>(mLife) / static_cast<float>(mLifeStat);
 	mLifeBar.setTextureRect({ 0,45,(int)percent,45 });
 }
