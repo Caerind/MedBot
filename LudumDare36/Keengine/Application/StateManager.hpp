@@ -20,6 +20,7 @@
 namespace ke
 {
 
+class Application;
 class State
 {
     public:
@@ -39,6 +40,8 @@ class State
 		virtual void onActivate();
 
 		virtual void onDeactivate();
+
+		Application& getApplication();
 
 	protected:
 		tgui::Gui mGui;

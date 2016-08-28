@@ -34,6 +34,11 @@ void State::onDeactivate()
 {
 }
 
+Application& State::getApplication()
+{
+	return Application::instance();
+}
+
 StateManager::StateManager()
 {
 }

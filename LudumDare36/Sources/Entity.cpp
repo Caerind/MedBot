@@ -1,5 +1,6 @@
 #include "../Keengine/Core/World.hpp"
 #include "Entity.hpp"
+#include "MyText.hpp"
 
 #include "GameState.hpp"
 
@@ -94,7 +95,11 @@ void Entity::grantMoney()
 	if (ent != nullptr)
 	{
 		int amount = (ent->getLifeStat() + ent->getAttackStat() + ent->getSpeedStat()) / 3;
-		getWorld().getApplication().getActualState<GameState>()->grantMoney(1, amount);
+		getWorld().getApplication().getActualState<GameState>()->grantMoney(mTeam, amount);
+		if (mTeam == 1)
+		{
+			getWorld().createActor<MyText>(amount)->setPosition(ent->getPosition() + sf::Vector2f(0, -60.f));
+		}
 	}
 }
 

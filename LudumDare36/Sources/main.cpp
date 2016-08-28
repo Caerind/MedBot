@@ -18,8 +18,9 @@ int main()
 	ke::Application::createResource<ke::Texture>("back", "Sources/back.png").setSmooth(true);
 	ke::Application::createResource<ke::Texture>("base", "Sources/base.png").setSmooth(true);
 	ke::Application::createResource<ke::Texture>("soldier", "Sources/soldier.png").setSmooth(true);
-	ke::Application::createResource<ke::Texture>("lifebar", "Sources/lifebar.png").setSmooth(true);
+	ke::Application::createResource<ke::Texture>("lifebar", "Sources/lifebar.png");
 	ke::Application::createResource<ke::Texture>("part", "Sources/part.png");
+	ke::Application::createResource<ke::Texture>("hud", "Sources/hud.png");
 
 	// Register States
 	ke::Application::registerState<GameState>("GameState");

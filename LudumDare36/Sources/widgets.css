@@ -221,3 +221,9 @@ Button.i33 {
     HoverImage      : "part.png" Part( 148, 148, 74, 74) Middle(10, 0, 25, 50);
     DownImage       : "part.png" Part( 148, 148, 74, 74) Middle(10, 0, 25, 50);
 }
+
+Button.sign {
+	NormalImage     : "hud.png" Part( 25, 0, 80, 80) Middle(10, 0, 25, 50);
+    HoverImage      : "hud.png" Part( 25, 0, 80, 80) Middle(10, 0, 25, 50);
+    DownImage       : "hud.png" Part( 25, 0, 80, 80) Middle(10, 0, 25, 50);
+}

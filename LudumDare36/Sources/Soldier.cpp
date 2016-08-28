@@ -7,7 +7,7 @@ Soldier::Soldier()
 {
 	mLifeStat = 100;
 	mAttackStat = 15;
-	mSpeedStat = 150;
+	mSpeedStat = 125;
 	mLife = mLifeStat;
 	mTeam = 2;
 	mTarget = "";
@@ -40,8 +40,7 @@ void Soldier::update(sf::Time dt)
 		{
 			if (entity->isAlive())
 			{
-				float t = static_cast<float>(mSpeedStat) / 100.f;
-				if (mAttackTimer > sf::seconds(t))
+				if (mAttackTimer > sf::seconds(200.f / static_cast<float>(mSpeedStat)))
 				{
 					entity->inflige(mAttackStat);
 					if (entity->isDead())

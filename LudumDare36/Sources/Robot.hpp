@@ -4,18 +4,22 @@
 #include "Entity.hpp"
 
 #include "../Keengine/Components/AnimatorComponent.hpp"
+#include "../Keengine/Components/SpriteComponent.hpp"
 
 class Robot : public Entity
 {
     public:
-		Robot(int life, int attack, int speed);
+		Robot(int head, int body, int legs);
 
 		void update(sf::Time dt);
 
         typedef std::shared_ptr<Robot> Ptr;
 
 	private:
-		ke::AnimatorComponent mComponent;
+		ke::SpriteComponent mHead;
+		ke::SpriteComponent mBody;
+		ke::AnimatorComponent mLegs;
+		ke::AnimatorComponent mArms;
 		sf::Time mAttackTimer;
 };
 

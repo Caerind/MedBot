@@ -39,6 +39,8 @@ class GameState : public ke::State
 		int mMoney1;
 		int mMoney2;
 
+		sf::Text mMoneyText;
+
 		sf::Sprite mHeadSprite;
 		sf::Sprite mBodySprite;
 		sf::Sprite mLegsSprite;

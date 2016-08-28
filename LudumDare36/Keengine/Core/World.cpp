@@ -159,13 +159,13 @@ void World::update(sf::Time dt)
 	mInputs.update(dt);
 	mTime.update(dt);
 
-	for (auto& actor : mActors)
+	for (std::size_t i = 0; i < mActors.size(); i++)
 	{
-		actor->updateComponents(dt);
-		actor->update(dt);
+		mActors[i]->updateComponents(dt);
+		mActors[i]->update(dt);
 		if (mUsePhysic)
 		{
-			actor->updateBody();
+			mActors[i]->updateBody();
 		}
 	}
 

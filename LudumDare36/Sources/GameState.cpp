@@ -3,7 +3,7 @@
 GameState::GameState()
 	: mWorld(ke::World::createInstance())
 {
-	mWorld.getTime().setTimeFactor(2.f);
+	mWorld.getTime().setTimeFactor(1.f);
 
 	createData();
 	createActor();
@@ -25,6 +25,10 @@ bool GameState::handleEvent(sf::Event const& event)
 bool GameState::update(sf::Time dt)
 {
 	mWorld.update(dt);
+	mMoneyText.setString("Money : " + std::to_string(mMoney1));
+
+	getApplication().setDebugInfo("Money2", std::to_string(mMoney2));
+
 	return false;
 }
 
@@ -48,6 +52,7 @@ void GameState::render(sf::RenderTarget & target, sf::RenderStates states)
 	{
 		target.draw(mLegsSprite);
 	}
+	target.draw(mMoneyText);
 }
 
 void GameState::onActivate()
@@ -106,6 +111,15 @@ void GameState::createGui()
 	mLegsSprite.setTextureRect(sf::IntRect(0, 0, 74, 74));
 	mLegsSprite.setPosition(299, 297 + 450);
 
+	ke::Font& font = mWorld.getResource<ke::Font>("futura");
+	mMoneyText.setFont(font);
+	mMoneyText.setFillColor(sf::Color::White);
+	mMoneyText.setOutlineColor(sf::Color::Black);
+	mMoneyText.setOutlineThickness(2.f);
+	mMoneyText.setCharacterSize(30);
+	mMoneyText.setString("Money : " + std::to_string(mMoney1));
+	mMoneyText.setPosition(20, 390 + 450);
+
 	ke::Theme& theme = mWorld.getResource<ke::Theme>("css");
 
 	tgui::Picture::Ptr background = std::make_shared<tgui::Picture>("Sources/gui.png");
@@ -121,7 +135,7 @@ void GameState::createGui()
 	{
 		if (mHead != 0 && mBody != 0 && mLegs != 0)
 		{
-			mWorld.createActor<Robot>(mData[mHead].value, mData[mBody].value, mData[mLegs].value)->setPosition({ 50.f, 365.f });
+			mWorld.createActor<Robot>(mHead, mBody, mLegs)->setPosition({ 50.f, 365.f });
 			mHead = 0;
 			mBody = 0;
 			mLegs = 0;
@@ -135,7 +149,7 @@ void GameState::createGui()
 	mGui.add(vlayout1);
 	tgui::HorizontalLayout::Ptr h11 = std::make_shared<tgui::HorizontalLayout>();
 	tgui::Button::Ptr i11 = theme.create("i11");
-	tgui::Button::Ptr l11 = theme.create("Button");
+	tgui::Button::Ptr l11 = theme.create("sign");
 	tgui::Button::Ptr b11 = theme.create("Button");
 	tgui::Label::Ptr t11 = theme.create("ToolTip");
 	vlayout1->add(h11);
@@ -144,7 +158,7 @@ void GameState::createGui()
 	h11->add(b11);
 	tgui::HorizontalLayout::Ptr h12 = std::make_shared<tgui::HorizontalLayout>();
 	tgui::Button::Ptr i12 = theme.create("i12");
-	tgui::Button::Ptr l12 = theme.create("Button");
+	tgui::Button::Ptr l12 = theme.create("sign");
 	tgui::Button::Ptr b12 = theme.create("Button");
 	tgui::Label::Ptr t12 = theme.create("ToolTip");
 	vlayout1->add(h12);
@@ -153,7 +167,7 @@ void GameState::createGui()
 	h12->add(b12);
 	tgui::HorizontalLayout::Ptr h13 = std::make_shared<tgui::HorizontalLayout>();
 	tgui::Button::Ptr i13 = theme.create("i13");
-	tgui::Button::Ptr l13 = theme.create("Button");
+	tgui::Button::Ptr l13 = theme.create("sign");
 	tgui::Button::Ptr b13 = theme.create("Button");
 	tgui::Label::Ptr t13 = theme.create("ToolTip");
 	vlayout1->add(h13);
@@ -174,7 +188,7 @@ void GameState::createGui()
 	h13->insertSpace(5, 0.2f);
 	t11->setText("Life : " + std::to_string(mData[11].value));
 	i11->setToolTip(t11);
-	i11->setSize(80, 80);
+	i11->setSize(74, 74);
 	l11->setSize(80, 80);
 	l11->setText("$" + std::to_string(mData[11].price));
 	l11->setTextSize(20);
@@ -183,7 +197,7 @@ void GameState::createGui()
 	b11->setTextSize(20);
 	t12->setText("Life : " + std::to_string(mData[12].value));
 	i12->setToolTip(t12);
-	i12->setSize(80, 80);
+	i12->setSize(74, 74);
 	l12->setSize(80, 80);
 	l12->setText("$" + std::to_string(mData[12].price));
 	l12->setTextSize(20);
@@ -192,7 +206,7 @@ void GameState::createGui()
 	b12->setTextSize(20);
 	t13->setText("Life : " + std::to_string(mData[13].value));
 	i13->setToolTip(t13);
-	i13->setSize(80, 80);
+	i13->setSize(74, 74);
 	l13->setSize(80, 80);
 	l13->setText("$" + std::to_string(mData[13].price));
 	l13->setTextSize(20);
@@ -207,7 +221,7 @@ void GameState::createGui()
 	mGui.add(vlayout2);
 	tgui::HorizontalLayout::Ptr h21 = std::make_shared<tgui::HorizontalLayout>();
 	tgui::Button::Ptr i21 = theme.create("i21");
-	tgui::Button::Ptr l21 = theme.create("Button");
+	tgui::Button::Ptr l21 = theme.create("sign");
 	tgui::Button::Ptr b21 = theme.create("Button");
 	tgui::Label::Ptr t21 = theme.create("ToolTip");
 	vlayout2->add(h21);
@@ -216,7 +230,7 @@ void GameState::createGui()
 	h21->add(b21);
 	tgui::HorizontalLayout::Ptr h22 = std::make_shared<tgui::HorizontalLayout>();
 	tgui::Button::Ptr i22 = theme.create("i22");
-	tgui::Button::Ptr l22 = theme.create("Button");
+	tgui::Button::Ptr l22 = theme.create("sign");
 	tgui::Button::Ptr b22 = theme.create("Button");
 	tgui::Label::Ptr t22 = theme.create("ToolTip");
 	vlayout2->add(h22);
@@ -225,7 +239,7 @@ void GameState::createGui()
 	h22->add(b22);
 	tgui::HorizontalLayout::Ptr h23 = std::make_shared<tgui::HorizontalLayout>();
 	tgui::Button::Ptr i23 = theme.create("i23");
-	tgui::Button::Ptr l23 = theme.create("Button");
+	tgui::Button::Ptr l23 = theme.create("sign");
 	tgui::Button::Ptr b23 = theme.create("Button");
 	tgui::Label::Ptr t23 = theme.create("ToolTip");
 	vlayout2->add(h23);
@@ -246,7 +260,7 @@ void GameState::createGui()
 	h23->insertSpace(5, 0.2f);
 	t21->setText("Attack : " + std::to_string(mData[21].value));
 	i21->setToolTip(t21);
-	i21->setSize(80, 80);
+	i21->setSize(74, 74);
 	l21->setSize(80, 80);
 	l21->setText("$" + std::to_string(mData[21].price));
 	l21->setTextSize(20);
@@ -255,7 +269,7 @@ void GameState::createGui()
 	b21->setTextSize(20);
 	t22->setText("Attack : " + std::to_string(mData[22].value));
 	i22->setToolTip(t22);
-	i22->setSize(80, 80);
+	i22->setSize(74, 74);
 	l22->setSize(80, 80);
 	l22->setText("$" + std::to_string(mData[22].price));
 	l22->setTextSize(20);
@@ -264,7 +278,7 @@ void GameState::createGui()
 	b22->setTextSize(20);
 	t23->setText("Attack : " + std::to_string(mData[23].value));
 	i23->setToolTip(t23);
-	i23->setSize(80, 80);
+	i23->setSize(74, 74);
 	l23->setSize(80, 80);
 	l23->setText("$" + std::to_string(mData[23].price));
 	l23->setTextSize(20);
@@ -278,7 +292,7 @@ void GameState::createGui()
 	mGui.add(vlayout3);
 	tgui::HorizontalLayout::Ptr h31 = std::make_shared<tgui::HorizontalLayout>();
 	tgui::Button::Ptr i31 = theme.create("i31");
-	tgui::Button::Ptr l31 = theme.create("Button");
+	tgui::Button::Ptr l31 = theme.create("sign");
 	tgui::Button::Ptr b31 = theme.create("Button");
 	tgui::Label::Ptr t31 = theme.create("ToolTip");
 	vlayout3->add(h31);
@@ -287,7 +301,7 @@ void GameState::createGui()
 	h31->add(b31);
 	tgui::HorizontalLayout::Ptr h32 = std::make_shared<tgui::HorizontalLayout>();
 	tgui::Button::Ptr i32 = theme.create("i32");
-	tgui::Button::Ptr l32 = theme.create("Button");
+	tgui::Button::Ptr l32 = theme.create("sign");
 	tgui::Button::Ptr b32 = theme.create("Button");
 	tgui::Label::Ptr t32 = theme.create("ToolTip");
 	vlayout3->add(h32);
@@ -296,7 +310,7 @@ void GameState::createGui()
 	h32->add(b32);
 	tgui::HorizontalLayout::Ptr h33 = std::make_shared<tgui::HorizontalLayout>();
 	tgui::Button::Ptr i33 = theme.create("i33");
-	tgui::Button::Ptr l33 = theme.create("Button");
+	tgui::Button::Ptr l33 = theme.create("sign");
 	tgui::Button::Ptr b33 = theme.create("Button");
 	tgui::Label::Ptr t33 = theme.create("ToolTip");
 	vlayout3->add(h33);
@@ -317,7 +331,7 @@ void GameState::createGui()
 	h33->insertSpace(5, 0.2f);
 	t31->setText("Speed : " + std::to_string(mData[31].value));
 	i31->setToolTip(t31);
-	i31->setSize(80, 80);
+	i31->setSize(74, 74);
 	l31->setSize(80, 80);
 	l31->setText("$" + std::to_string(mData[31].price));
 	l31->setTextSize(20);
@@ -326,7 +340,7 @@ void GameState::createGui()
 	b31->setTextSize(20);
 	t32->setText("Speed : " + std::to_string(mData[32].value));
 	i32->setToolTip(t32);
-	i32->setSize(80, 80);
+	i32->setSize(74, 74);
 	l32->setSize(80, 80);
 	l32->setText("$" + std::to_string(mData[32].price));
 	l32->setTextSize(20);
@@ -335,7 +349,7 @@ void GameState::createGui()
 	b32->setTextSize(20);
 	t33->setText("Speed : " + std::to_string(mData[33].value));
 	i33->setToolTip(t33);
-	i33->setSize(80, 80);
+	i33->setSize(74, 74);
 	l33->setSize(80, 80);
 	l33->setText("$" + std::to_string(mData[33].price));
 	l33->setTextSize(20);
