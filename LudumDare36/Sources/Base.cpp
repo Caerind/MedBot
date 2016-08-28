@@ -6,7 +6,7 @@
 
 Base::Base(int team)
 {
-	mLifeStat = 1000;
+	mLifeStat = 10000;
 	mAttackStat = 0;
 	mSpeedStat = 0;
 	mLife = mLifeStat;

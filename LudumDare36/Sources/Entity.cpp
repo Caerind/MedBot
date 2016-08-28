@@ -75,10 +75,6 @@ bool Entity::isDead() const
 	return (mLife <= 0);
 }
 
-void Entity::onDying() const
-{
-}
-
 int Entity::getTeam() const
 {
 	return mTeam;
@@ -89,16 +85,76 @@ void Entity::setTeam(int team)
 	mTeam = team;
 }
 
-void Entity::grantMoney()
+int Entity::getEnemyTeam()
 {
-	Entity::Ptr ent = getWorld().getTypedActor<Entity>(mTarget);
-	if (ent != nullptr)
+	return (mTeam == 1) ? 2 : 1;
+}
+
+void Entity::update(sf::Time dt)
+{
+	mAttackTimer += dt;
+
+	if (mTarget != "")
 	{
-		int amount = (ent->getLifeStat() + ent->getAttackStat() + ent->getSpeedStat()) / 3;
-		getWorld().getApplication().getActualState<GameState>()->grantMoney(mTeam, amount);
-		if (mTeam == 1)
+		Entity::Ptr entity = getWorld().getTypedActor<Entity>(mTarget);
+		Base::Ptr base = std::dynamic_pointer_cast<Base>(entity);
+		if (entity != nullptr)
 		{
-			getWorld().createActor<MyText>(amount)->setPosition(ent->getPosition() + sf::Vector2f(0, -60.f));
+			if (entity->isAlive())
+			{
+				if (mAttackTimer > sf::seconds(200.f / static_cast<float>(mSpeedStat)))
+				{
+					entity->inflige(mAttackStat);
+
+					if (base != nullptr)
+					{
+						getWorld().getApplication().getActualState<GameState>()->grantMoney(getEnemyTeam(), 5);
+					}
+
+					if (entity->isDead())
+					{
+						int amount = (entity->getLifeStat() + entity->getAttackStat() + entity->getSpeedStat()) / 6;
+						getWorld().getApplication().getActualState<GameState>()->grantMoney(getTeam(), amount);
+						getWorld().getApplication().getActualState<GameState>()->grantMoney(getEnemyTeam(), 10);
+						if (mTeam == 1)
+						{
+							getWorld().createActor<MyText>(amount)->setPosition(entity->getPosition() + sf::Vector2f(0, -60.f));
+						}
+						entity->remove();
+						mTarget = "";
+					}
+					mAttackTimer = sf::Time::Zero;
+				}
+			}
+			else
+			{
+				mTarget = "";
+			}
+		}
+		else
+		{
+			mTarget = "";
+		}
+	}
+	else
+	{
+		float modifier = (mTeam == 1) ? 1.f : -1.f;
+		move(sf::Vector2f(modifier, 0.f) * dt.asSeconds() * static_cast<float>(mSpeedStat));
+
+		std::size_t size = getWorld().getActorCount();
+		float mindist = 50.f;
+		for (std::size_t i = 0; i < size; i++)
+		{
+			Entity::Ptr ent = getWorld().getTypedActor<Entity>(i);
+			if (ent != nullptr)
+			{
+				float d = ke::distance(getPosition(), ent->getPosition());
+				if (d < mindist && ent->getTeam() != getTeam() && ent->isAlive())
+				{
+					mindist = d;
+					mTarget = ent->getId();
+				}
+			}
 		}
 	}
 }
@@ -106,23 +162,4 @@ void Entity::grantMoney()
 std::string Entity::getTarget() const
 {
 	return mTarget;
-}
-
-void Entity::acquireTarget()
-{
-	std::size_t size = getWorld().getActorCount();
-	float mindist = 50.f;
-	for (std::size_t i = 0; i < size; i++)
-	{
-		Entity::Ptr ent = getWorld().getTypedActor<Entity>(i);
-		if (ent != nullptr)
-		{
-			float d = ke::distance(getPosition(), ent->getPosition());
-			if (d < mindist && ent->getTeam() != getTeam() && ent->isAlive())
-			{
-				mindist = d;
-				mTarget = ent->getId();
-			}
-		}
-	}
 }

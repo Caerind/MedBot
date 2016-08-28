@@ -30,14 +30,20 @@ class GameState : public ke::State
 
 		void grantMoney(int team, int amount);
 
+		void updateAI(sf::Time dt);
+
 	protected:
 		ke::World& mWorld;
+
+		sf::Time mGameTime;
+		sf::Time mMoneyGranter;
 
 		std::string mBase1;
 		std::string mBase2;
 
 		int mMoney1;
 		int mMoney2;
+		int mEnemyCost;
 
 		sf::Text mMoneyText;
 

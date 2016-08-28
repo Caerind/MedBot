@@ -24,15 +24,14 @@ class Entity : public ke::Actor
 		bool inflige(int damage);
 		bool isAlive() const;
 		bool isDead() const;
-		virtual void onDying() const;
 
 		int getTeam() const;
 		void setTeam(int team);
+		int getEnemyTeam();
 
-		void grantMoney();
+		void update(sf::Time dt);
 
 		std::string getTarget() const;
-		void acquireTarget();
 
 	protected:
 		int mLifeStat;
@@ -44,6 +43,7 @@ class Entity : public ke::Actor
 		int mTeam;
 
 		std::string mTarget;
+		sf::Time mAttackTimer;
 };
 
 #endif // ENTITY_HPP

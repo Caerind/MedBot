@@ -8,11 +8,7 @@
 class Soldier : public Entity
 {
     public:
-		Soldier();
-
-		void update(sf::Time dt);
-
-		void onDying();
+		Soldier(sf::Time gameTime);
 
         typedef std::shared_ptr<Soldier> Ptr;
 

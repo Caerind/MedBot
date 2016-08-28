@@ -3,8 +3,6 @@
 GameState::GameState()
 	: mWorld(ke::World::createInstance())
 {
-	mWorld.getTime().setTimeFactor(1.f);
-
 	createData();
 	createActor();
 	createGui();
@@ -28,6 +26,16 @@ bool GameState::update(sf::Time dt)
 	mMoneyText.setString("Money : " + std::to_string(mMoney1));
 
 	getApplication().setDebugInfo("Money2", std::to_string(mMoney2));
+
+	mMoneyGranter += dt;
+	if (mMoneyGranter > sf::seconds(0.5f))
+	{
+		grantMoney(1, ke::random(1, 3));
+		grantMoney(2, ke::random(1, 3));
+		mMoneyGranter = sf::Time::Zero;
+	}
+
+	updateAI(dt);
 
 	return false;
 }
@@ -79,6 +87,7 @@ void GameState::createData()
 
 	mMoney1 = s["money1"];
 	mMoney2 = s["money2"];
+	mEnemyCost = s["enemyCost"];
 
 	mHead = 0;
 	mBody = 0;
@@ -91,9 +100,6 @@ void GameState::createActor()
 
 	mBase1 = mWorld.createActor<Base>(1)->getId();
 	mBase2 = mWorld.createActor<Base>(2)->getId();
-
-	Soldier::Ptr test2 = mWorld.createActor<Soldier>();
-	test2->setPosition({ 1550.f, 365.f });
 }
 
 void GameState::createGui()
@@ -449,6 +455,15 @@ void GameState::grantMoney(int team, int amount)
 	if (team == 2)
 	{
 		mMoney2 += amount;
+	}
+}
+
+void GameState::updateAI(sf::Time dt)
+{
+	if (mMoney2 >= mEnemyCost)
+	{
+		mMoney2 -= mEnemyCost;
+		mWorld.createActor<Soldier>(mGameTime)->setPosition({ 1550.f, 365.f });
 	}
 }
 

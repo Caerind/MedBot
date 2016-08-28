@@ -1,13 +1,14 @@
 #include "../Keengine/Core/World.hpp"
 #include "Soldier.hpp"
+#include "GameState.hpp"
 
 #include <iostream>
 
-Soldier::Soldier()
+Soldier::Soldier(sf::Time gameTime)
 {
-	mLifeStat = 100;
-	mAttackStat = 15;
-	mSpeedStat = 125;
+	mLifeStat = 100 + ke::random(-10, 10) + (int)(gameTime.asSeconds() / 30);
+	mAttackStat = 15 + ke::random(-5, 5) + (int)(gameTime.asSeconds() / 30);
+	mSpeedStat = 125 + ke::random(-25, 25) + (int)(gameTime.asSeconds() / 30);
 	mLife = mLifeStat;
 	mTeam = 2;
 	mTarget = "";
@@ -28,49 +29,4 @@ Soldier::Soldier()
 	mComponent.scale({ 0.25f, 0.25f });
 	mComponent.playAnimation("run");
 	mComponent.move({ -32.f, -64.f });
-}
-
-void Soldier::update(sf::Time dt)
-{
-	mAttackTimer += dt;
-	if (mTarget != "")
-	{
-		Entity::Ptr entity = getWorld().getTypedActor<Entity>(mTarget);
-		if (entity != nullptr)
-		{
-			if (entity->isAlive())
-			{
-				if (mAttackTimer > sf::seconds(200.f / static_cast<float>(mSpeedStat)))
-				{
-					entity->inflige(mAttackStat);
-					if (entity->isDead())
-					{
-						grantMoney();
-						entity->onDying();
-						entity->remove();
-						mTarget = "";
-					}
-					mAttackTimer = sf::Time::Zero;
-				}
-			}
-			else
-			{
-				mTarget = "";
-			}
-		}
-		else
-		{
-			mTarget = "";
-		}
-	}
-	else
-	{
-		move(sf::Vector2f(-1.f, 0.f) * dt.asSeconds() * static_cast<float>(mSpeedStat));
-		acquireTarget();
-	}
-}
-
-void Soldier::onDying()
-{
-	// TODO : Increase AI aggresivity
 }
