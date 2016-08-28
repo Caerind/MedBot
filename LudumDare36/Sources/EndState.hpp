@@ -14,6 +14,8 @@ class EndState : public ke::State
 		void render(sf::RenderTarget& target, sf::RenderStates states = sf::RenderStates::Default);
 
 	protected:
+		sf::Text mInfo;
+		sf::Text mScore;
 		tgui::EditBox::Ptr mBox;
 		tgui::Button::Ptr mSend;
 		bool mSent;

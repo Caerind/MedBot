@@ -34,10 +34,15 @@ class GameState : public ke::State
 
 		void updateAI(sf::Time dt);
 
+		void killEnemy();
+
 	protected:
 		ke::World& mWorld;
 
 		sf::Time mGameTime;
+		int mMoneySpend;
+		int mEnenyKilled;
+
 		sf::Time mMoneyGranter;
 
 		std::string mBase1;

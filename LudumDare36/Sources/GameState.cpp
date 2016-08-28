@@ -387,6 +387,7 @@ void GameState::createGui()
 		{
 			mHead = 11;
 			mMoney1 -= mData[11].price;
+			mMoneySpend += mData[11].price;
 			mHeadSprite.setTextureRect({ 0,0,74,74 });
 			mWorld.getApplication().playSound("sgood");
 		}
@@ -401,6 +402,7 @@ void GameState::createGui()
 		{
 			mHead = 12;
 			mMoney1 -= mData[12].price;
+			mMoneySpend += mData[12].price;
 			mHeadSprite.setTextureRect({ 74,0,74,74 });
 			mWorld.getApplication().playSound("sgood");
 		}
@@ -415,6 +417,7 @@ void GameState::createGui()
 		{
 			mHead = 13;
 			mMoney1 -= mData[13].price;
+			mMoneySpend += mData[13].price;
 			mHeadSprite.setTextureRect({ 148,0,74,74 });
 			mWorld.getApplication().playSound("sgood");
 		}
@@ -429,6 +432,7 @@ void GameState::createGui()
 		{
 			mBody = 21;
 			mMoney1 -= mData[21].price;
+			mMoneySpend += mData[21].price;
 			mBodySprite.setTextureRect({ 0,74,74,74 });
 			mWorld.getApplication().playSound("sgood");
 		}
@@ -443,6 +447,7 @@ void GameState::createGui()
 		{
 			mBody = 22;
 			mMoney1 -= mData[22].price;
+			mMoneySpend += mData[22].price;
 			mBodySprite.setTextureRect({ 74,74,74,74 });
 			mWorld.getApplication().playSound("sgood");
 		}
@@ -457,6 +462,7 @@ void GameState::createGui()
 		{
 			mBody = 23;
 			mMoney1 -= mData[23].price;
+			mMoneySpend += mData[23].price;
 			mBodySprite.setTextureRect({ 148,74,74,74 });
 			mWorld.getApplication().playSound("sgood");
 		}
@@ -471,6 +477,7 @@ void GameState::createGui()
 		{
 			mLegs = 31;
 			mMoney1 -= mData[31].price;
+			mMoneySpend += mData[31].price;
 			mLegsSprite.setTextureRect({ 0,148,74,74 });
 			mWorld.getApplication().playSound("sgood");
 		}
@@ -484,7 +491,8 @@ void GameState::createGui()
 		if (mLegs == 0 && mMoney1 >= mData[32].price)
 		{
 			mLegs = 32;
-			mMoney1 -= mData[232].price;
+			mMoney1 -= mData[32].price;
+			mMoneySpend += mData[32].price;
 			mLegsSprite.setTextureRect({ 74,148,74,74 });
 			mWorld.getApplication().playSound("sgood");
 		}
@@ -499,6 +507,7 @@ void GameState::createGui()
 		{
 			mLegs = 33;
 			mMoney1 -= mData[33].price;
+			mMoneySpend += mData[33].price;
 			mLegsSprite.setTextureRect({ 148,148,74,74 });
 			mWorld.getApplication().playSound("sgood");
 		}
@@ -511,8 +520,7 @@ void GameState::createGui()
 
 void GameState::end(int team)
 {
-	int score = 10;
-	// TODO : Score
+	int score = (int)(3000.f - mGameTime.asSeconds() + 10000 - mMoneySpend + 10 * mEnenyKilled);
 	getApplication().getValues().setProperty("winner", std::to_string(team));
 	getApplication().getValues().setProperty("score", std::to_string(score));
 	clearStates();
@@ -539,6 +547,11 @@ void GameState::updateAI(sf::Time dt)
 		mWorld.createActor<Soldier>(mGameTime)->setPosition({ 1550.f, 365.f });
 		mWorld.getApplication().playSound("sspawns");
 	}
+}
+
+void GameState::killEnemy()
+{
+	mEnenyKilled++;
 }
 
 GameState::GameData::GameData()

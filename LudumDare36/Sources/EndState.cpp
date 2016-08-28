@@ -4,28 +4,36 @@ EndState::EndState()
 {
 	mSent = false;
 
+	bool win = (ke::Application::getValues().getProperty("winner") == "1");
+	std::string score = ke::Application::getValues().getProperty("score");
+
 	ke::Application::setBackgroundTexture("ld36", { 0,0,1600,900 });
 	
 	ke::Theme& theme = ke::Application::getResource<ke::Theme>("css");
-	bool win = (ke::Application::getValues().getProperty("winner") == "1");
-	std::string score = ke::Application::getValues().getProperty("score");
+	ke::Font& font = ke::Application::getResource<ke::Font>("futura");
 
 	if (!win)
 	{
 		mSent = true;
 	}
 
-	tgui::Label::Ptr iLabel = theme.create("Label");
-	iLabel->setText((win) ? "Victory !" : "Defeat...");
-	iLabel->setSize(400, 100);
-	iLabel->setPosition(600, 150);
-	mGui.add(iLabel);
+	mInfo.setFont(font);
+	mInfo.setOutlineThickness(2.f);
+	mInfo.setOutlineColor(sf::Color::Black);
+	mInfo.setFillColor(sf::Color::White);
+	mInfo.setString((win) ? "Victory !" : "Defeat...");
+	mInfo.setCharacterSize(100);
+	mInfo.setOrigin(mInfo.getGlobalBounds().width * 0.5f, mInfo.getGlobalBounds().height * 0.5f);
+	mInfo.setPosition(800, 150);
 
-	tgui::Label::Ptr sLabel = theme.create("Label");
-	sLabel->setText("Score : " + score);
-	sLabel->setSize(400, 100);
-	sLabel->setPosition(600, 300);
-	mGui.add(sLabel);
+	mScore.setFont(font);
+	mScore.setOutlineThickness(2.f);
+	mScore.setOutlineColor(sf::Color::Black);
+	mScore.setFillColor(sf::Color::White);
+	mScore.setString("Score : " + score);
+	mScore.setCharacterSize(80);
+	mScore.setOrigin(mScore.getGlobalBounds().width * 0.5f, mScore.getGlobalBounds().height * 0.5f);
+	mScore.setPosition(800, 300);
 
 	if (win)
 	{
@@ -33,12 +41,14 @@ EndState::EndState()
 		mBox->setSize(300, 100);
 		mBox->setPosition(600, 450);
 		mBox->setDefaultText("Username");
+		mBox->setTextSize(40);
 		mGui.add(mBox);
 
 		mSend = theme.create("Button");
 		mSend->setSize(100, 100);
 		mSend->setPosition(900, 450);
 		mSend->setText("Send");
+		mSend->setTextSize(40);
 		mGui.add(mSend);
 
 		mSend->connect("pressed", [&]()
@@ -55,10 +65,15 @@ EndState::EndState()
 					mSent = true;
 					mSend->setSize(400, 100);
 					mSend->setPosition(600, 450);
-					mSend->setText("Sent !");
+					mSend->setText("Play Again !");
+					mSend->setTextSize(40);
 				}
 			}
-
+			else
+			{
+				clearStates();
+				pushState("GameState");
+			}
 		});
 	}
 	else
@@ -67,12 +82,13 @@ EndState::EndState()
 		retry->setSize(400, 100);
 		retry->setPosition(600, 450);
 		retry->setText("Try Again !");
+		retry->setTextSize(40);
 		mGui.add(retry);
 
 		retry->connect("pressed", [&]()
 		{
 			clearStates();
-			pushState("IntroState");
+			pushState("TutoState");
 		});
 	}
 
@@ -80,6 +96,7 @@ EndState::EndState()
 	quit->setSize(400, 100);
 	quit->setPosition(600, 600);
 	quit->setText("Go to Menu");
+	quit->setTextSize(40);
 	mGui.add(quit);
 
 	quit->connect("pressed", [&]()
@@ -106,5 +123,7 @@ bool EndState::update(sf::Time dt)
 
 void EndState::render(sf::RenderTarget & target, sf::RenderStates states)
 {
+	target.draw(mInfo);
+	target.draw(mScore);
 	mGui.draw();
 }

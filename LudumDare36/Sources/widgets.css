@@ -2,7 +2,7 @@ Button {
     NormalImage     : "widgets.png" Part( 0, 64, 45, 50) Middle(10, 0, 25, 50);
     HoverImage      : "widgets.png" Part(45, 64, 45, 50) Middle(10, 0, 25, 50);
     DownImage       : "widgets.png" Part(90, 64, 45, 50) Middle(10, 0, 25, 50);
-    TextColorNormal : rgb(190, 190, 190);
+    TextColorNormal : rgb(250, 250, 250);
     TextColorHover  : rgb(250, 250, 250);
     TextColorDown   : rgb(250, 250, 250);
 }
@@ -226,4 +226,10 @@ Button.sign {
 	NormalImage     : "hud.png" Part( 25, 0, 80, 80) Middle(10, 0, 25, 50);
     HoverImage      : "hud.png" Part( 25, 0, 80, 80) Middle(10, 0, 25, 50);
     DownImage       : "hud.png" Part( 25, 0, 80, 80) Middle(10, 0, 25, 50);
+}
+
+Button.score {
+	NormalImage     : "widgets.png" Part( 0, 0, 60, 32) Middle(10, 0, 25, 50);
+    HoverImage      : "widgets.png" Part( 0, 0, 60, 32) Middle(10, 0, 25, 50);
+    DownImage       : "widgets.png" Part( 0, 0, 60, 32) Middle(10, 0, 25, 50);
 }

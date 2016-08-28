@@ -122,6 +122,7 @@ void Entity::update(sf::Time dt)
 							getWorld().createActor<MyText>(amount)->setPosition(entity->getPosition() + sf::Vector2f(0, -60.f));
 							getWorld().getApplication().playSound("sdies");
 							getWorld().getApplication().playSound("scoin");
+							getWorld().getApplication().getActualState<GameState>()->killEnemy();
 						}
 						else
 						{
