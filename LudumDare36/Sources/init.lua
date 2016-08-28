@@ -37,3 +37,4 @@ d33["value"] = 210
 money1 = 150
 money2 = 150
 enemyCost = 110
+baselife = 2000

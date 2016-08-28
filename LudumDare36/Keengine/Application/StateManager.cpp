@@ -39,6 +39,21 @@ Application& State::getApplication()
 	return Application::instance();
 }
 
+void State::popState()
+{
+	Application::popState();
+}
+
+void State::pushState(std::string const& state)
+{
+	Application::pushState(state);
+}
+
+void State::clearStates()
+{
+	Application::clearStates();
+}
+
 StateManager::StateManager()
 {
 }

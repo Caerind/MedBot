@@ -31,6 +31,9 @@ class Entity : public ke::Actor
 
 		void update(sf::Time dt);
 
+		virtual void onRun();
+		virtual void onAttack(sf::Time attackTime);
+
 		std::string getTarget() const;
 
 	protected:

@@ -33,11 +33,11 @@ Robot::Robot(int head, int body, int legs)
 	attachComponent(&mArms);
 	mArms.setZ(4.f);
 	mArms.move({ -2.f, -48.f });
+	float duration = 200.f / static_cast<float>(mSpeedStat);
 	ke::Animation& aIdle = mArms.getAnimation("idle");
-	aIdle.addFrame("robot", { 0, 147, 37, 22 }, sf::seconds(0.25f));
-	aIdle.addFrame("robot", { 0, 169, 37, 22 }, sf::seconds(0.25f));
-	aIdle.addFrame("robot", { 0, 191, 37, 22 }, sf::seconds(0.25f));
-	aIdle.addFrame("robot", { 0, 169, 37, 22 }, sf::seconds(0.25f));
+	aIdle.addFrame("robot", { 0, 191, 37, 22 }, sf::seconds(0.25f * duration));
+	aIdle.addFrame("robot", { 0, 147, 37, 22 }, sf::seconds(0.65f * duration));
+	aIdle.addFrame("robot", { 0, 169, 37, 22 }, sf::seconds(0.10f * duration));
 	ke::Animation& aRun = mArms.getAnimation("run");
 	aRun.addFrame("robot", { 0, 147, 37, 22 }, sf::seconds(10.f));
 
@@ -54,4 +54,17 @@ Robot::Robot(int head, int body, int legs)
 
 	mArms.playAnimation("run");
 	mLegs.playAnimation("run");
+}
+
+void Robot::onRun()
+{
+	mArms.playAnimation("run");
+	mLegs.playAnimation("run");
+}
+
+void Robot::onAttack(sf::Time attackTimer)
+{
+	mArms.playAnimation("idle");
+	mArms.setElapsedTime(attackTimer);
+	mLegs.playAnimation("idle");
 }

@@ -267,6 +267,12 @@ void Application::handleEvent()
 
 void Application::update(sf::Time dt)
 {
+	instance().mAudio.update();
+
+	auto mouse = getMousePosition2i();
+	setDebugInfo("MouseX", mouse.x);
+	setDebugInfo("MouseY", mouse.y);
+
     if (instance().mStateMode)
     {
         if (stateCount() > 0)
@@ -285,12 +291,6 @@ void Application::update(sf::Time dt)
             instance().mUpdateDefaultFunction(dt);
         }
     }
-	
-	auto mouse = getMousePosition2i();
-	setDebugInfo("MouseX", mouse.x);
-	setDebugInfo("MouseY", mouse.y);
-
-    instance().mAudio.update();
 }
 
 void Application::render()
@@ -536,6 +536,7 @@ bool Application::isOpen()
 void Application::close()
 {
     instance().mWindow.close();
+	instance().mAudio.stop();
 }
 
 bool Application::pollEvent(sf::Event& event)

@@ -17,6 +17,22 @@ bool GameState::handleEvent(sf::Event const& event)
 {
 	mWorld.handleEvent(event);
 	mGui.handleEvent(event);
+
+	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space && event.key.control)
+	{
+		mMoney1++;
+	}
+
+	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::A && event.key.control)
+	{
+		end(1);
+	}
+
+	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::B && event.key.control)
+	{
+		end(2);
+	}
+
 	return false;
 }
 
@@ -26,6 +42,7 @@ bool GameState::update(sf::Time dt)
 	mMoneyText.setString("Money : " + std::to_string(mMoney1));
 
 	getApplication().setDebugInfo("Money2", std::to_string(mMoney2));
+	getApplication().setDebugInfo("GameTime", std::to_string(mGameTime.asSeconds()));
 
 	mMoneyGranter += dt;
 	if (mMoneyGranter > sf::seconds(0.5f))
@@ -145,6 +162,7 @@ void GameState::createGui()
 			mHead = 0;
 			mBody = 0;
 			mLegs = 0;
+			mWorld.getApplication().playSound("sspawnr");
 		}
 	});
 	mGui.add(create);
@@ -370,6 +388,11 @@ void GameState::createGui()
 			mHead = 11;
 			mMoney1 -= mData[11].price;
 			mHeadSprite.setTextureRect({ 0,0,74,74 });
+			mWorld.getApplication().playSound("sgood");
+		}
+		else
+		{
+			mWorld.getApplication().playSound("sbad");
 		}
 	});
 	b12->connect("pressed", [&]()
@@ -379,6 +402,11 @@ void GameState::createGui()
 			mHead = 12;
 			mMoney1 -= mData[12].price;
 			mHeadSprite.setTextureRect({ 74,0,74,74 });
+			mWorld.getApplication().playSound("sgood");
+		}
+		else
+		{
+			mWorld.getApplication().playSound("sbad");
 		}
 	});
 	b13->connect("pressed", [&]()
@@ -388,6 +416,11 @@ void GameState::createGui()
 			mHead = 13;
 			mMoney1 -= mData[13].price;
 			mHeadSprite.setTextureRect({ 148,0,74,74 });
+			mWorld.getApplication().playSound("sgood");
+		}
+		else
+		{
+			mWorld.getApplication().playSound("sbad");
 		}
 	});
 	b21->connect("pressed", [&]()
@@ -397,6 +430,11 @@ void GameState::createGui()
 			mBody = 21;
 			mMoney1 -= mData[21].price;
 			mBodySprite.setTextureRect({ 0,74,74,74 });
+			mWorld.getApplication().playSound("sgood");
+		}
+		else
+		{
+			mWorld.getApplication().playSound("sbad");
 		}
 	});
 	b22->connect("pressed", [&]()
@@ -406,6 +444,11 @@ void GameState::createGui()
 			mBody = 22;
 			mMoney1 -= mData[22].price;
 			mBodySprite.setTextureRect({ 74,74,74,74 });
+			mWorld.getApplication().playSound("sgood");
+		}
+		else
+		{
+			mWorld.getApplication().playSound("sbad");
 		}
 	});
 	b23->connect("pressed", [&]()
@@ -415,6 +458,11 @@ void GameState::createGui()
 			mBody = 23;
 			mMoney1 -= mData[23].price;
 			mBodySprite.setTextureRect({ 148,74,74,74 });
+			mWorld.getApplication().playSound("sgood");
+		}
+		else
+		{
+			mWorld.getApplication().playSound("sbad");
 		}
 	});
 	b31->connect("pressed", [&]()
@@ -424,6 +472,11 @@ void GameState::createGui()
 			mLegs = 31;
 			mMoney1 -= mData[31].price;
 			mLegsSprite.setTextureRect({ 0,148,74,74 });
+			mWorld.getApplication().playSound("sgood");
+		}
+		else
+		{
+			mWorld.getApplication().playSound("sbad");
 		}
 	});
 	b32->connect("pressed", [&]()
@@ -433,6 +486,11 @@ void GameState::createGui()
 			mLegs = 32;
 			mMoney1 -= mData[232].price;
 			mLegsSprite.setTextureRect({ 74,148,74,74 });
+			mWorld.getApplication().playSound("sgood");
+		}
+		else
+		{
+			mWorld.getApplication().playSound("sbad");
 		}
 	});
 	b33->connect("pressed", [&]()
@@ -442,8 +500,23 @@ void GameState::createGui()
 			mLegs = 33;
 			mMoney1 -= mData[33].price;
 			mLegsSprite.setTextureRect({ 148,148,74,74 });
+			mWorld.getApplication().playSound("sgood");
+		}
+		else
+		{
+			mWorld.getApplication().playSound("sbad");
 		}
 	});
+}
+
+void GameState::end(int team)
+{
+	int score = 10;
+	// TODO : Score
+	getApplication().getValues().setProperty("winner", std::to_string(team));
+	getApplication().getValues().setProperty("score", std::to_string(score));
+	clearStates();
+	pushState("EndState");
 }
 
 void GameState::grantMoney(int team, int amount)
@@ -464,6 +537,7 @@ void GameState::updateAI(sf::Time dt)
 	{
 		mMoney2 -= mEnemyCost;
 		mWorld.createActor<Soldier>(mGameTime)->setPosition({ 1550.f, 365.f });
+		mWorld.getApplication().playSound("sspawns");
 	}
 }
 

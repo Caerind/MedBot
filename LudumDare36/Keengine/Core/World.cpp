@@ -35,7 +35,7 @@ World::World()
 	, mSceneTexture()
 	, mVertices(sf::Triangles, 6)
 	, mCamera(nullptr)
-	, mWorldView(getApplication().getDefaultView())
+	, mWorldView(getApplication().getView())
 	, mEffects()
 {
 	//mUsePhysic = true;

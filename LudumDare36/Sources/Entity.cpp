@@ -105,6 +105,7 @@ void Entity::update(sf::Time dt)
 				if (mAttackTimer > sf::seconds(200.f / static_cast<float>(mSpeedStat)))
 				{
 					entity->inflige(mAttackStat);
+					getWorld().getApplication().playSound("shit");
 
 					if (base != nullptr)
 					{
@@ -119,9 +120,21 @@ void Entity::update(sf::Time dt)
 						if (mTeam == 1)
 						{
 							getWorld().createActor<MyText>(amount)->setPosition(entity->getPosition() + sf::Vector2f(0, -60.f));
+							getWorld().getApplication().playSound("sdies");
+							getWorld().getApplication().playSound("scoin");
+						}
+						else
+						{
+							getWorld().getApplication().playSound("sdier");
 						}
 						entity->remove();
 						mTarget = "";
+						onRun();
+
+						if (base != nullptr)
+						{
+							getWorld().getApplication().getActualState<GameState>()->end(mTeam);
+						}
 					}
 					mAttackTimer = sf::Time::Zero;
 				}
@@ -129,11 +142,13 @@ void Entity::update(sf::Time dt)
 			else
 			{
 				mTarget = "";
+				onRun();
 			}
 		}
 		else
 		{
 			mTarget = "";
+			onRun();
 		}
 	}
 	else
@@ -156,7 +171,19 @@ void Entity::update(sf::Time dt)
 				}
 			}
 		}
+		if (mTarget != "")
+		{
+			onAttack(mAttackTimer);
+		}
 	}
+}
+
+void Entity::onRun()
+{
+}
+
+void Entity::onAttack(sf::Time attackTime)
+{
 }
 
 std::string Entity::getTarget() const

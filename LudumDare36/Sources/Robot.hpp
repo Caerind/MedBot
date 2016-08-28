@@ -11,6 +11,9 @@ class Robot : public Entity
     public:
 		Robot(int head, int body, int legs);
 
+		void onRun();
+		void onAttack(sf::Time attackTimer);
+
         typedef std::shared_ptr<Robot> Ptr;
 
 	private:

@@ -43,6 +43,10 @@ class State
 
 		Application& getApplication();
 
+		void popState();
+		void pushState(std::string const& state);
+		void clearStates();
+
 	protected:
 		tgui::Gui mGui;
 };

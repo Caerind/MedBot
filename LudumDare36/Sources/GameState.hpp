@@ -28,6 +28,8 @@ class GameState : public ke::State
 		void createActor();
 		void createGui();
 
+		void end(int team);
+
 		void grantMoney(int team, int amount);
 
 		void updateAI(sf::Time dt);

@@ -8,7 +8,7 @@
 class Base : public Entity
 {
     public:
-		Base(int  team);
+		Base(int team);
 
 		void update(sf::Time dt);
 
