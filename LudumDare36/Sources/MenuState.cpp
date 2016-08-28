@@ -38,7 +38,7 @@ MenuState::MenuState()
 	{
 		std::istringstream iss(rep);
 		std::size_t i = 1;
-		vlayout->add(addScore("Leaderboard", "Name", "Score"));
+		vlayout->add(addScore("Leaderboard", "Name", "Score", true));
 		while (std::getline(iss, rep))
 		{
 			std::size_t found = rep.find_last_of(" ");
@@ -46,7 +46,6 @@ MenuState::MenuState()
 			{
 				std::string name = rep.substr(0, found);
 				std::string score = rep.substr(found + 1);
-				getApplication().getLog() << name + " " + score;
 				vlayout->add(addScore(std::to_string(i), name, score));
 			}
 			i++;
@@ -62,6 +61,46 @@ MenuState::MenuState()
 		clearStates();
 	});
 	mGui.add(buttonQuit);
+
+	tgui::CheckBox::Ptr musicBox = theme.create("CheckBox");
+	musicBox->setSize(75, 75);
+	musicBox->setPosition(1300, 500);
+	if (ke::Application::getMusicVolume() >= 50.f)
+	{
+		musicBox->check();
+	}
+	else
+	{
+		musicBox->uncheck();
+	}
+	musicBox->connect("checked", []() { ke::Application::setMusicVolume(100.f); });
+	musicBox->connect("unchecked", []() { ke::Application::setMusicVolume(0.f); });
+	mGui.add(musicBox);
+
+	tgui::CheckBox::Ptr soundBox = theme.create("CheckBox");
+	soundBox->setSize(75, 75);
+	soundBox->setPosition(1300, 600);
+	if (ke::Application::getSoundVolume() >= 50.f)
+	{
+		soundBox->check();
+	}
+	else
+	{
+		soundBox->uncheck();
+	}
+	soundBox->connect("checked", []() { ke::Application::setSoundVolume(100.f); });
+	soundBox->connect("unchecked", []() { ke::Application::setSoundVolume(0.f); });
+	mGui.add(soundBox);
+
+	tgui::Label::Ptr musicLabel = theme.create("Label");
+	musicLabel->setPosition(1400, 530);
+	musicLabel->setText("Music");
+	mGui.add(musicLabel);
+
+	tgui::Label::Ptr soundLabel = theme.create("Label");
+	soundLabel->setPosition(1400, 630);
+	soundLabel->setText("Sound");
+	mGui.add(soundLabel);
 }
 
 MenuState::~MenuState()
@@ -85,11 +124,11 @@ void MenuState::render(sf::RenderTarget & target, sf::RenderStates states)
 	target.draw(mTitle);
 }
 
-tgui::HorizontalLayout::Ptr MenuState::addScore(std::string const& index, std::string const & name, std::string const & score)
+tgui::HorizontalLayout::Ptr MenuState::addScore(std::string const& index, std::string const & name, std::string const & score, bool title)
 {
 	tgui::HorizontalLayout::Ptr h = std::make_shared<tgui::HorizontalLayout>();
 
-	tgui::Button::Ptr i = getApplication().getResource<ke::Theme>("css").create("score");
+	tgui::Button::Ptr i = getApplication().getResource<ke::Theme>("css").create((title) ? "title" : "score");
 	i->setText(index);
 	i->getRenderer()->setTextColor(sf::Color::White);
 	i->getRenderer()->setTextColorDown(sf::Color::White);
@@ -97,7 +136,7 @@ tgui::HorizontalLayout::Ptr MenuState::addScore(std::string const& index, std::s
 	i->getRenderer()->setTextColorHover(sf::Color::White);
 	h->add(i);
 
-	tgui::Button::Ptr n = getApplication().getResource<ke::Theme>("css").create("score");
+	tgui::Button::Ptr n = getApplication().getResource<ke::Theme>("css").create((title) ? "title" : "score");
 	n->setText(name);
 	n->getRenderer()->setTextColor(sf::Color::White);
 	n->getRenderer()->setTextColorDown(sf::Color::White);
@@ -105,7 +144,7 @@ tgui::HorizontalLayout::Ptr MenuState::addScore(std::string const& index, std::s
 	n->getRenderer()->setTextColorHover(sf::Color::White);
 	h->add(n);
 
-	tgui::Button::Ptr s = getApplication().getResource<ke::Theme>("css").create("score");
+	tgui::Button::Ptr s = getApplication().getResource<ke::Theme>("css").create((title) ? "title" : "score");
 	s->setText(score);
 	s->getRenderer()->setTextColor(sf::Color::White);
 	s->getRenderer()->setTextColorDown(sf::Color::White);

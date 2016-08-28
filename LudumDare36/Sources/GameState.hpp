@@ -36,12 +36,15 @@ class GameState : public ke::State
 
 		void killEnemy();
 
+		int computeScore();
+
 	protected:
 		ke::World& mWorld;
 
 		sf::Time mGameTime;
 		int mMoneySpend;
 		int mEnenyKilled;
+		sf::Text mScore;
 
 		sf::Time mMoneyGranter;
 

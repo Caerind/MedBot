@@ -15,6 +15,8 @@ class IntroState : public ke::State
 
 	protected:
 		sf::Time mElapsed;
+		sf::Text mTitle;
+		bool mLoaded;
 };
 
 #endif // INTROSTATE_HPP

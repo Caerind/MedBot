@@ -43,6 +43,7 @@ bool GameState::update(sf::Time dt)
 
 	getApplication().setDebugInfo("Money2", std::to_string(mMoney2));
 	getApplication().setDebugInfo("GameTime", std::to_string(mGameTime.asSeconds()));
+	getApplication().setDebugInfo("Score", std::to_string(computeScore()));
 
 	mMoneyGranter += dt;
 	if (mMoneyGranter > sf::seconds(0.5f))
@@ -53,6 +54,10 @@ bool GameState::update(sf::Time dt)
 	}
 
 	updateAI(dt);
+
+	mGameTime += dt;
+
+	mScore.setString("Score : " + std::to_string(computeScore()));
 
 	return false;
 }
@@ -78,6 +83,7 @@ void GameState::render(sf::RenderTarget & target, sf::RenderStates states)
 		target.draw(mLegsSprite);
 	}
 	target.draw(mMoneyText);
+	target.draw(mScore);
 }
 
 void GameState::onActivate()
@@ -143,9 +149,18 @@ void GameState::createGui()
 	mMoneyText.setString("Money : " + std::to_string(mMoney1));
 	mMoneyText.setPosition(20, 390 + 450);
 
+	mScore.setFont(font);
+	mScore.setOutlineThickness(2.f);
+	mScore.setOutlineColor(sf::Color::Black);
+	mScore.setFillColor(sf::Color::White);
+	mScore.setString("Score : " + std::to_string(computeScore()));
+	mScore.setCharacterSize(40);
+	mScore.setOrigin(mScore.getGlobalBounds().width * 0.5f, mScore.getGlobalBounds().height * 0.5f);
+	mScore.setPosition(800, 20);
+
 	ke::Theme& theme = mWorld.getResource<ke::Theme>("css");
 
-	tgui::Picture::Ptr background = std::make_shared<tgui::Picture>("Sources/gui.png");
+	tgui::Picture::Ptr background = std::make_shared<tgui::Picture>("gui.png");
 	background->setPosition(0, 450);
 	background->setSize(1600, 450);
 	mGui.add(background);
@@ -237,7 +252,6 @@ void GameState::createGui()
 	b13->setSize(80, 80);
 	b13->setText("Buy");
 	b13->setTextSize(20);
-
 
 	tgui::VerticalLayout::Ptr vlayout2 = std::make_shared<tgui::VerticalLayout>();
 	vlayout2->setPosition(767 + 30, 450 + 40);
@@ -520,9 +534,8 @@ void GameState::createGui()
 
 void GameState::end(int team)
 {
-	int score = (int)(3000.f - mGameTime.asSeconds() + 10000 - mMoneySpend + 10 * mEnenyKilled);
 	getApplication().getValues().setProperty("winner", std::to_string(team));
-	getApplication().getValues().setProperty("score", std::to_string(score));
+	getApplication().getValues().setProperty("score", std::to_string(computeScore()));
 	clearStates();
 	pushState("EndState");
 }
@@ -552,6 +565,11 @@ void GameState::updateAI(sf::Time dt)
 void GameState::killEnemy()
 {
 	mEnenyKilled++;
+}
+
+int GameState::computeScore()
+{
+	return (int)(10000 - mMoneySpend - mGameTime.asSeconds() + 25.f * mEnenyKilled);
 }
 
 GameState::GameData::GameData()

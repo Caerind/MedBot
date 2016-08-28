@@ -4,6 +4,11 @@ EndState::EndState()
 {
 	mSent = false;
 
+	mHide.setTexture(getApplication().getResource<ke::Texture>("ld36"));
+	mHide.setTextureRect({ 450,375,1,160 });
+	mHide.setPosition({ 450, 375 });
+	mHide.setScale(700.f, 1.f);
+
 	bool win = (ke::Application::getValues().getProperty("winner") == "1");
 	std::string score = ke::Application::getValues().getProperty("score");
 
@@ -123,6 +128,7 @@ bool EndState::update(sf::Time dt)
 
 void EndState::render(sf::RenderTarget & target, sf::RenderStates states)
 {
+	target.draw(mHide);
 	target.draw(mInfo);
 	target.draw(mScore);
 	mGui.draw();

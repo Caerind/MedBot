@@ -19,6 +19,8 @@ class EndState : public ke::State
 		tgui::EditBox::Ptr mBox;
 		tgui::Button::Ptr mSend;
 		bool mSent;
+
+		sf::Sprite mHide;
 };
 
 #endif // ENDSTATE_HPP

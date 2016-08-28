@@ -12,6 +12,10 @@ class TutoState : public ke::State
 		bool handleEvent(sf::Event const& event);
 		bool update(sf::Time dt);
 		void render(sf::RenderTarget& target, sf::RenderStates states = sf::RenderStates::Default);
+
+	protected:
+		bool mFrench;
+		sf::Sprite mTuto;
 };
 
 #endif // TUTOSTATE_HPP

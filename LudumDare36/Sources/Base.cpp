@@ -7,7 +7,10 @@
 Base::Base(int team)
 {
 	mLifeStat = getWorld().getApplication().script("init.lua")["baselife"];
-	mLifeStat *= team;
+	if (mTeam == 2)
+	{
+		mLifeStat = (int)(1.5f * (float)mLifeStat);
+	}
 	mAttackStat = 0;
 	mSpeedStat = 0;
 	mLife = mLifeStat;

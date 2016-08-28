@@ -25,11 +25,36 @@ TutoState::TutoState()
 		pushState("MenuState");
 	});
 	mGui.add(buttonQuit);
+
+	mFrench = false;
+
+	mTuto.setTexture(getApplication().getResource<ke::Texture>("tuto"));
+	mTuto.setTextureRect({ 1600,mFrench * 222,649,222 });
+	mTuto.setPosition(466, 57);
+
+	tgui::CheckBox::Ptr fr = theme.create("CheckBox");
+	fr->setSize(50, 50);
+	fr->setPosition(1600 - 400 - 60, 220);
+	fr->uncheck();
+	fr->connect("checked", [&]() {
+		mFrench = true;
+		mTuto.setTextureRect({ 1600,mFrench * 222,649,222 });
+	});
+	fr->connect("unchecked", [&]() {
+		mFrench = false;
+		mTuto.setTextureRect({ 1600,mFrench * 222,649,222 });
+	});
+	mGui.add(fr);
+	tgui::Label::Ptr frLabel = theme.create("Label");
+	frLabel->setTextSize(30);
+	frLabel->setPosition(fr->getPosition() + sf::Vector2f(70, 10));
+	frLabel->setText("French");
+	frLabel->setTextColor(sf::Color::Black);
+	mGui.add(frLabel);
 }
 
 TutoState::~TutoState()
 {
-	ke::Application::setBackgroundColor(sf::Color::White);
 }
 
 bool TutoState::handleEvent(sf::Event const & event)
@@ -45,5 +70,6 @@ bool TutoState::update(sf::Time dt)
 
 void TutoState::render(sf::RenderTarget & target, sf::RenderStates states)
 {
+	target.draw(mTuto);
 	mGui.draw();
 }
