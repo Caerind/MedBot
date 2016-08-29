@@ -85,7 +85,7 @@ float TimeSystem::getTimerPercent(std::size_t handle) const
 {
 	if (mTimers.find(handle) != mTimers.end())
 	{
-		return mTimers.at(handle).elapsed.asMilliseconds() / mTimers.at(handle).duration.asMilliseconds();
+		return mTimers.at(handle).elapsed.asSeconds() / mTimers.at(handle).duration.asSeconds();
 	}
 	return 0.f;
 }

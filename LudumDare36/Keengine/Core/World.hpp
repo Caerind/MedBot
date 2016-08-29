@@ -14,7 +14,6 @@
 #include "Actor.hpp"
 #include "Effect.hpp"
 #include "InputSystem.hpp"
-#include "PhysicSystem.hpp"
 #include "TimeSystem.hpp"
 #include "PrimitiveComponent.hpp"
 
@@ -44,8 +43,6 @@ namespace ke
 		InputSystem& getInputs();
 		Log& getLog();
 		ltbl::LightSystem& getLights();
-		PhysicSystem& getPhysic();
-		b2World* getPhysicWorld();
 		TimeSystem& getTime();
 
 		virtual void handleEvent(sf::Event const& event);
@@ -148,9 +145,6 @@ namespace ke
 		std::map<std::size_t, std::shared_ptr<Effect>> mEffects;
 
 		InputSystem mInputs;
-
-		bool mUsePhysic;
-		PhysicSystem mPhysic;
 
 		sf::RectangleShape mBackground;
 

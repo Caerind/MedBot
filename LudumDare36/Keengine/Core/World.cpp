@@ -132,16 +132,6 @@ ltbl::LightSystem & World::getLights()
 	return mLights;
 }
 
-PhysicSystem& World::getPhysic()
-{
-	return mPhysic;
-}
-
-b2World* World::getPhysicWorld()
-{
-	return mPhysic.getWorld();
-}
-
 TimeSystem& World::getTime()
 {
 	return mTime;
@@ -163,19 +153,6 @@ void World::update(sf::Time dt)
 	{
 		mActors[i]->updateComponents(dt);
 		mActors[i]->update(dt);
-		if (mUsePhysic)
-		{
-			mActors[i]->updateBody();
-		}
-	}
-
-	if (mUsePhysic)
-	{
-		mPhysic.update(dt);
-		for (auto& actor : mActors)
-		{
-			actor->updatePhysic();
-		}
 	}
 
 	mActors.erase(std::remove_if(mActors.begin(), mActors.end(), [](Actor::Ptr actor) 
@@ -270,11 +247,6 @@ void World::render(sf::RenderTarget& target)
 	for (auto itr = mEffects.begin(); itr != mEffects.end(); itr++)
 	{
 		itr->second->apply(mSceneTexture, mSceneTexture);
-	}
-
-	if (mUsePhysic)
-	{
-		mPhysic.render(mSceneTexture);
 	}
 
 	mSceneTexture.display();

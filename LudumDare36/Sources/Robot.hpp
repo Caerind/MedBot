@@ -9,7 +9,7 @@
 class Robot : public Entity
 {
     public:
-		Robot(int head, int body, int legs);
+		Robot(int head, int body, int legs, int h, int b, int l);
 
 		void onRun();
 		void onAttack(sf::Time attackTimer);

@@ -96,21 +96,19 @@ void GameState::onDeactivate()
 
 void GameState::createData()
 {
-	auto& s = mWorld.getApplication().script("init.lua");
+	mData[11] = GameData(11, 25, 50);
+	mData[12] = GameData(12, 50, 80);
+	mData[13] = GameData(13, 90, 125);
+	mData[21] = GameData(21, 25, 25);
+	mData[22] = GameData(22, 50, 37);
+	mData[23] = GameData(23, 100, 60);
+	mData[31] = GameData(31, 25, 100);
+	mData[32] = GameData(32, 50, 150);
+	mData[33] = GameData(33, 90, 210);
 
-	mData[11] = GameData(11, s["d11"]["price"], s["d11"]["value"]);
-	mData[12] = GameData(12, s["d12"]["price"], s["d12"]["value"]);
-	mData[13] = GameData(13, s["d13"]["price"], s["d13"]["value"]);
-	mData[21] = GameData(21, s["d21"]["price"], s["d21"]["value"]);
-	mData[22] = GameData(22, s["d22"]["price"], s["d22"]["value"]);
-	mData[23] = GameData(23, s["d23"]["price"], s["d23"]["value"]);
-	mData[31] = GameData(31, s["d31"]["price"], s["d31"]["value"]);
-	mData[32] = GameData(32, s["d32"]["price"], s["d32"]["value"]);
-	mData[33] = GameData(33, s["d33"]["price"], s["d33"]["value"]);
-
-	mMoney1 = s["money1"];
-	mMoney2 = s["money2"];
-	mEnemyCost = s["enemyCost"];
+	mMoney1 = 150;
+	mMoney2 = 150;
+	mEnemyCost = 110;
 
 	mHead = 0;
 	mBody = 0;
@@ -173,7 +171,7 @@ void GameState::createGui()
 	{
 		if (mHead != 0 && mBody != 0 && mLegs != 0)
 		{
-			mWorld.createActor<Robot>(mHead, mBody, mLegs)->setPosition({ 50.f, 365.f });
+			mWorld.createActor<Robot>(mHead, mBody, mLegs, mData[mHead].value, mData[mBody].value, mData[mLegs].value)->setPosition({ 50.f, 365.f });
 			mHead = 0;
 			mBody = 0;
 			mLegs = 0;

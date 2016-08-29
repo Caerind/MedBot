@@ -7,7 +7,6 @@
 
 #include <SFML/System/Time.hpp>
 #include <SFML/System/Vector2.hpp>
-#include <Box2D\Dynamics\b2Body.h>
 
 #include "Component.hpp"
 #include "SceneComponent.hpp"
@@ -55,9 +54,6 @@ class Actor
 		virtual void update(sf::Time dt);
 		void updateComponents(sf::Time dt);
 
-		void updateBody();
-		void updatePhysic();
-
 		void attachComponent(SceneComponent* component);
 		void detachComponent(SceneComponent* component);
 
@@ -65,8 +61,6 @@ class Actor
 		void unregisterComponent(Component* component);
 
 		World& getWorld() const;
-
-		b2Body* getBody();
 
 		std::size_t getActualId();
 		std::size_t getComponentCount() const;
@@ -101,8 +95,6 @@ class Actor
 
 		bool mMarkedForRemoval;
 		std::string mId;
-
-		b2Body* mBody;
 
 		std::size_t mIdCounter;
 };

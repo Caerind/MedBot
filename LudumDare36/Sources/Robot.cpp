@@ -5,12 +5,11 @@
 
 #include <iostream>
 
-Robot::Robot(int head, int body, int legs)
+Robot::Robot(int head, int body, int legs, int h, int b, int l)
 {
-	auto& s = getWorld().getApplication().script("init.lua");
-	mLifeStat = s[std::string("d" + std::to_string(head)).c_str()]["value"];
-	mAttackStat = s[std::string("d" + std::to_string(body)).c_str()]["value"];
-	mSpeedStat = s[std::string("d" + std::to_string(legs)).c_str()]["value"];
+	mLifeStat = h;
+	mAttackStat = b;
+	mSpeedStat = l;
 	mLife = mLifeStat;
 	mTeam = 1;
 	mTarget = "";

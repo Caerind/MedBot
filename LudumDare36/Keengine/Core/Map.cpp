@@ -294,17 +294,7 @@ bool Map::loadTmxFile(std::string const& filename)
 	{
 		for (pugi::xml_node object = group.child("object"); object; object = object.next_sibling("object"))
 		{
-			mCollisions.push_back(std::make_shared<CollisionComponent>());
-			registerComponent(mCollisions.back().get());
-			attachComponent(mCollisions.back().get());
-			sf::Vector2f p = { object.attribute("x").as_float(),  object.attribute("y").as_float() };
-			sf::Vector2f s = { object.attribute("width").as_float(), object.attribute("height").as_float() };
-			std::vector<sf::Vector2f> points;
-			points.push_back(p);
-			points.push_back({ p.x + s.x, p.y });
-			points.push_back({ p.x + s.x, p.y + s.y});
-			points.push_back({ p.x, p.y + s.y});
-			mCollisions.back()->setShape(points);
+			
 		}
 	}
 
